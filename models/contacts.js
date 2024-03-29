@@ -1,8 +1,10 @@
 const fs = require("fs/promises");
 
+const DB_FILE = "models/contacts.json";
+
 const listContacts = async () => {
   try {
-    const data = await fs.readFile("models/contacts.json", "utf8");
+    const data = await fs.readFile(DB_FILE, "utf8");
     return JSON.parse(data);
   } catch (error) {
     console.error("Error reading contacts file:", error);
@@ -31,10 +33,7 @@ const removeContact = async (contactId) => {
       return false;
     }
 
-    await fs.writeFile(
-      "models/contacts.json",
-      JSON.stringify(updatedContacts, null, 2)
-    );
+    await fs.writeFile(DB_FILE, JSON.stringify(updatedContacts, null, 2));
     return true;
   } catch (error) {
     console.error("Error removing contact:", error);
@@ -47,10 +46,7 @@ const addContact = async (body) => {
     const contacts = await listContacts();
     const newContact = { id: String(Date.now()), ...body };
     contacts.push(newContact);
-    await fs.writeFile(
-      "models/contacts.json",
-      JSON.stringify(contacts, null, 2)
-    );
+    await fs.writeFile(DB_FILE, JSON.stringify(contacts, null, 2));
     return newContact;
   } catch (error) {
     console.error("Error adding contact:", error);
@@ -65,10 +61,7 @@ const updateContact = async (contactId, body) => {
     if (index === -1) return null;
     const updatedContact = { ...contacts[index], ...body };
     contacts[index] = updatedContact;
-    await fs.writeFile(
-      "models/contacts.json",
-      JSON.stringify(contacts, null, 2)
-    );
+    await fs.writeFile(DB_FILE, JSON.stringify(contacts, null, 2));
     return updatedContact;
   } catch (error) {
     console.error("Error updating contact:", error);
