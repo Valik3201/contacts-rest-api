@@ -1,31 +1,52 @@
-## GoIT Node.js Course Template Homework
+# Contacts REST API
 
-Виконайте форк цього репозиторію для виконання домашніх завдань (2-6)
-Форк створить репозиторій на вашому http://github.com
+This project implements a REST API for managing contacts. It provides endpoints for listing contacts, retrieving a contact by ID, adding a new contact, updating an existing contact, and deleting a contact.
 
-Додайте ментора до колаборації
+![Node.js Badge](https://img.shields.io/badge/Node.js-393?logo=nodedotjs&logoColor=fff&style=flat)
+![Nodemon Badge](https://img.shields.io/badge/Nodemon-76D04B?logo=nodemon&logoColor=fff&style=flat)
+![Express Badge](https://img.shields.io/badge/Express-000?logo=express&logoColor=fff&style=flat)
 
-Для кожної домашньої роботи створюйте свою гілку.
+## Features
 
-- hw02
-- hw03
-- hw04
-- hw05
-- hw06
+- **REST API Routes**: Implements routes for handling contacts using Express.js.
+- **Data Handling Functions**: Includes functions for managing contact data, such as listing contacts, adding, updating, and deleting contacts.
+- **Middleware Configuration**: Configures Express.js middleware for logging, CORS, and JSON parsing.
+- **Data Validation**: Enhances data validation using Joi to ensure incoming data meets specified requirements.
 
-Кожна нова гілка для др повинна робитися з master
+## Installation
 
-Після того, як ви закінчили виконувати домашнє завдання у своїй гілці, необхідно зробити пулл-реквест (PR). Потім додати ментора для рев'ю коду. Тільки після того, як ментор заапрувить PR, ви можете виконати мердж гілки з домашнім завданням у майстер.
+1. Clone the repository:
 
-Уважно читайте коментарі ментора. Виправте зауваження та зробіть коміт у гілці з домашнім завданням. Зміни підтягнуться у PR автоматично після того, як ви відправите коміт з виправленнями на github
-Після виправлення знову додайте ментора на рев'ю коду.
+   ```bash
+   git clone <repository-url>
+   ```
 
-- При здачі домашньої роботи є посилання на PR
-- JS-код чистий та зрозумілий, для форматування використовується Prettier
+2. Install dependencies:
 
-### Команди:
+   ```bash
+   npm install
+   ```
 
-- `npm start` &mdash; старт сервера в режимі production
-- `npm run start:dev` &mdash; старт сервера в режимі розробки (development)
-- `npm run lint` &mdash; запустити виконання перевірки коду з eslint, необхідно виконувати перед кожним PR та виправляти всі помилки лінтера
-- `npm lint:fix` &mdash; та ж перевірка лінтера, але з автоматичними виправленнями простих помилок
+3. Start the server:
+
+   ```bash
+   npm start
+   ```
+
+## Usage
+
+- **GET /api/contacts**: Retrieves a list of all contacts.
+- **GET /api/contacts/:id**: Retrieves a specific contact by ID.
+- **POST /api/contacts**: Adds a new contact.
+- **PUT /api/contacts/:id**: Updates an existing contact.
+- **DELETE /api/contacts/:id**: Deletes a contact by ID.
+
+## Technologies Used
+
+- Node.js
+- Express.js
+- Joi
+
+## Contributing
+
+Contributions are welcome! Please fork the repository and create a pull request with your changes.
