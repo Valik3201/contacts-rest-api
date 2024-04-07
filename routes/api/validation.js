@@ -8,6 +8,7 @@ const contactSchemaForCreate = Joi.object({
     .min(9)
     .max(15)
     .required(),
+  favorite: Joi.boolean(),
 });
 
 const contactSchemaForUpdate = Joi.object({
@@ -17,6 +18,7 @@ const contactSchemaForUpdate = Joi.object({
     .pattern(/^[0-9]+$/)
     .min(9)
     .max(15),
+  favorite: Joi.boolean(),
 });
 
 const contactIdSchema = Joi.string().required();
