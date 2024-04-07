@@ -6,6 +6,7 @@ const {
   listContacts,
   removeContact,
   updateContact,
+  updateStatusContact,
 } = require("../../controllers/contactController");
 
 const {
@@ -29,7 +30,7 @@ router.get("/:contactId", async (req, res, next) => {
     if (!contact) {
       return res.status(404).json({ message: "Contact not found" });
     }
-    res.json(contact);
+    res.status(200).json(contact);
   } catch (error) {
     next(error);
   }
@@ -60,7 +61,7 @@ router.delete("/:contactId", async (req, res, next) => {
     if (!removedContact) {
       return res.status(404).json({ message: "Contact not found" });
     }
-    res.json({ message: "Contact deleted" });
+    res.status(200).json({ message: "Contact deleted" });
   } catch (error) {
     next(error);
   }
@@ -82,9 +83,39 @@ router.put("/:contactId", async (req, res, next) => {
     if (!updatedContact) {
       return res.status(404).json({ message: "Contact not found" });
     }
-    res.json(updatedContact);
+    res.status(200).json(updatedContact);
   } catch (error) {
     next(error);
+  }
+});
+
+router.patch("/:contactId/favorite", async (req, res) => {
+  try {
+    const contactId = req.params.contactId;
+
+    const { error: idError } = contactIdSchema.validate(req.params.contactId);
+    if (idError) {
+      return res.status(400).json({ message: idError.details[0].message });
+    }
+
+    const { favorite } = req.body;
+
+    if (typeof favorite !== "boolean") {
+      return res
+        .status(400)
+        .json({ message: "Invalid favorite value. It should be a boolean." });
+    }
+
+    const updatedContact = await updateStatusContact(contactId, { favorite });
+
+    if (!updatedContact) {
+      return res.status(404).json({ message: "Not found" });
+    }
+
+    res.status(200).json(updatedContact);
+  } catch (error) {
+    console.error("Error updating favorite status:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
