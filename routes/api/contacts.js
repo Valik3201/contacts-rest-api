@@ -6,14 +6,20 @@ const {
   listContacts,
   removeContact,
   updateContact,
-} = require("../../models/contacts");
+  updateStatusContact,
+} = require("../../controllers/contactController");
 
-const { contactSchema, contactIdSchema } = require("./validation");
+const {
+  contactSchemaForCreate,
+  contactSchemaForUpdate,
+  favoriteSchemaForUpdate,
+  contactIdSchema,
+} = require("./validation");
 
 router.get("/", async (req, res, next) => {
   try {
     const contacts = await listContacts();
-    res.json(contacts);
+    res.status(200).json(contacts);
   } catch (error) {
     next(error);
   }
@@ -25,7 +31,7 @@ router.get("/:contactId", async (req, res, next) => {
     if (!contact) {
       return res.status(404).json({ message: "Contact not found" });
     }
-    res.json(contact);
+    res.status(200).json(contact);
   } catch (error) {
     next(error);
   }
@@ -33,7 +39,7 @@ router.get("/:contactId", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
   try {
-    const { error } = contactSchema.validate(req.body);
+    const { error } = contactSchemaForCreate.validate(req.body);
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
     }
@@ -56,7 +62,7 @@ router.delete("/:contactId", async (req, res, next) => {
     if (!removedContact) {
       return res.status(404).json({ message: "Contact not found" });
     }
-    res.json({ message: "Contact deleted" });
+    res.status(200).json({ message: "Contact deleted" });
   } catch (error) {
     next(error);
   }
@@ -69,7 +75,7 @@ router.put("/:contactId", async (req, res, next) => {
       return res.status(400).json({ message: idError.details[0].message });
     }
 
-    const { error: bodyError } = contactSchema.validate(req.body);
+    const { error: bodyError } = contactSchemaForUpdate.validate(req.body);
     if (bodyError) {
       return res.status(400).json({ message: bodyError.details[0].message });
     }
@@ -78,9 +84,37 @@ router.put("/:contactId", async (req, res, next) => {
     if (!updatedContact) {
       return res.status(404).json({ message: "Contact not found" });
     }
-    res.json(updatedContact);
+    res.status(200).json(updatedContact);
   } catch (error) {
     next(error);
+  }
+});
+
+router.patch("/:contactId/favorite", async (req, res) => {
+  try {
+    const { error: idError } = contactIdSchema.validate(req.params.contactId);
+    if (idError) {
+      return res.status(400).json({ message: idError.details[0].message });
+    }
+
+    const { error, value } = favoriteSchemaForUpdate.validate(req.body);
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message });
+    }
+
+    const updatedContact = await updateStatusContact(
+      req.params.contactId,
+      value
+    );
+
+    if (!updatedContact) {
+      return res.status(404).json({ message: "Not found" });
+    }
+
+    res.status(200).json(updatedContact);
+  } catch (error) {
+    console.error("Error updating favorite status:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
