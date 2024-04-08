@@ -12,6 +12,7 @@ const {
 const {
   contactSchemaForCreate,
   contactSchemaForUpdate,
+  favoriteSchemaForUpdate,
   contactIdSchema,
 } = require("./validation");
 
@@ -91,22 +92,20 @@ router.put("/:contactId", async (req, res, next) => {
 
 router.patch("/:contactId/favorite", async (req, res) => {
   try {
-    const contactId = req.params.contactId;
-
     const { error: idError } = contactIdSchema.validate(req.params.contactId);
     if (idError) {
       return res.status(400).json({ message: idError.details[0].message });
     }
 
-    const { favorite } = req.body;
-
-    if (typeof favorite !== "boolean") {
-      return res
-        .status(400)
-        .json({ message: "Invalid favorite value. It should be a boolean." });
+    const { error, value } = favoriteSchemaForUpdate.validate(req.body);
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message });
     }
 
-    const updatedContact = await updateStatusContact(contactId, { favorite });
+    const updatedContact = await updateStatusContact(
+      req.params.contactId,
+      value
+    );
 
     if (!updatedContact) {
       return res.status(404).json({ message: "Not found" });
