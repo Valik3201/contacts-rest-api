@@ -14,7 +14,7 @@ const {
   contactSchemaForUpdate,
   favoriteSchemaForUpdate,
   contactIdSchema,
-} = require("./validation");
+} = require("../../validation/contactSchemas");
 
 router.get("/", async (req, res, next) => {
   try {
