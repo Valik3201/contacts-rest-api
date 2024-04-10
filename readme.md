@@ -5,6 +5,9 @@ This project implements a REST API for managing contacts. It provides endpoints 
 ![Node.js Badge](https://img.shields.io/badge/Node.js-393?logo=nodedotjs&logoColor=fff&style=flat)
 ![Nodemon Badge](https://img.shields.io/badge/Nodemon-76D04B?logo=nodemon&logoColor=fff&style=flat)
 ![Express Badge](https://img.shields.io/badge/Express-000?logo=express&logoColor=fff&style=flat)
+![MongoDB Badge](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=fff&style=flat)
+![Mongoose Badge](https://img.shields.io/badge/Mongoose-800?logo=mongoose&logoColor=fff&style=flat)
+![JSON Web Tokens Badge](https://img.shields.io/badge/JSON%20Web%20Tokens-000?logo=jsonwebtokens&logoColor=fff&style=flat)
 
 ## Features
 
@@ -44,8 +47,13 @@ This project implements a REST API for managing contacts. It provides endpoints 
 ## Technologies Used
 
 - Node.js
+- Nodemon
 - Express.js
 - Joi
+- MongoDB
+- Mongoose
+- JWT (JSON Web Tokens)
+- bcrypt
 
 ## Contributing
 
