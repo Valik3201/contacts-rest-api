@@ -18,6 +18,38 @@ const getContactById = async (contactId) => {
   }
 };
 
+const listContactsPaginated = async (page, limit) => {
+  try {
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const totalCount = await Contact.countDocuments();
+    const contacts = await Contact.find().limit(limit).skip(startIndex);
+    const hasNextPage = endIndex < totalCount;
+    const hasPreviousPage = startIndex > 0;
+    return {
+      contacts,
+      hasNextPage,
+      hasPreviousPage,
+    };
+  } catch (error) {
+    console.error("Error listing paginated contacts:", error);
+    return {
+      contacts: [],
+      hasNextPage: false,
+      hasPreviousPage: false,
+    };
+  }
+};
+
+const listFavoriteContacts = async () => {
+  try {
+    return await Contact.find({ favorite: true });
+  } catch (error) {
+    console.error("Error listing favorite contacts:", error);
+    return [];
+  }
+};
+
 const removeContact = async (contactId) => {
   try {
     const result = await Contact.deleteOne({ _id: contactId });
@@ -73,6 +105,8 @@ module.exports = {
   addContact,
   getContactById,
   listContacts,
+  listContactsPaginated,
+  listFavoriteContacts,
   removeContact,
   updateContact,
   updateStatusContact,
