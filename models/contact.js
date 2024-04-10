@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-// Определение схемы модели контакта
 const contactSchema = new mongoose.Schema(
   {
     name: {
@@ -13,11 +12,14 @@ const contactSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   { versionKey: false }
 );
 
-// Создание модели на основе схемы
 const Contact = mongoose.model("Contact", contactSchema);
 
 module.exports = Contact;
