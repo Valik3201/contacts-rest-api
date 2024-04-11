@@ -5,13 +5,16 @@ const jwt = require("jsonwebtoken");
 const User = require("../../models/user");
 const authenticateToken = require("../../middleware/authenticateToken");
 
-const { loginSchema } = require("../../validation/userSchemas");
+const {
+  userSchema,
+  subscriptionUpdateSchema,
+} = require("../../validation/userSchemas");
 
 require("dotenv").config();
 
 router.post("/register", async (req, res) => {
   try {
-    const { error, value } = loginSchema.validate(req.body);
+    const { error, value } = userSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
     }
@@ -44,7 +47,7 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
-    const { error, value } = loginSchema.validate(req.body);
+    const { error, value } = userSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
     }
@@ -119,12 +122,12 @@ router.patch("/users", authenticateToken, async (req, res) => {
   try {
     const userId = req.user._id;
 
-    const { subscription } = req.body;
-
-    const validSubscriptions = ["starter", "pro", "business"];
-    if (!validSubscriptions.includes(subscription)) {
-      return res.status(400).json({ message: "Invalid subscription value" });
+    const { error } = subscriptionUpdateSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message });
     }
+
+    const { subscription } = req.body;
 
     const user = await User.findById(userId);
     if (!user) {
