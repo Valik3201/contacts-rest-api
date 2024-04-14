@@ -5,20 +5,24 @@ const connectDB = require("./config/database");
 
 connectDB();
 
-const contactsRouter = require("./routes/api/contacts");
-
 const app = express();
+
+app.use(express.json());
+
+const contactsRouter = require("./routes/api/contactRoutes");
+const authRoutes = require("./routes/api/authRoutes");
+const authenticateToken = require("./middleware/authenticateToken");
+
+app.use("/api/contacts", authenticateToken, contactsRouter);
+app.use("/api/auth", authRoutes);
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
 app.use(logger(formatsLogger));
 app.use(cors());
-app.use(express.json());
-
-app.use("/api/contacts", contactsRouter);
 
 app.use((req, res) => {
-  res.status(404).json({ message: "Not found" });
+  res.status(404).json({ message: "404 Not found" });
 });
 
 app.use((err, req, res, next) => {

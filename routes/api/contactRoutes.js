@@ -4,6 +4,8 @@ const {
   addContact,
   getContactById,
   listContacts,
+  listContactsPaginated,
+  listFavoriteContacts,
   removeContact,
   updateContact,
   updateStatusContact,
@@ -14,14 +16,25 @@ const {
   contactSchemaForUpdate,
   favoriteSchemaForUpdate,
   contactIdSchema,
-} = require("./validation");
+} = require("../../validation/contactSchemas");
 
-router.get("/", async (req, res, next) => {
+router.get("/", async (req, res) => {
   try {
-    const contacts = await listContacts();
+    let contacts;
+    const { page, limit, favorite } = req.query;
+
+    if (page && limit) {
+      contacts = await listContactsPaginated(+page, +limit);
+    } else if (favorite === "true") {
+      contacts = await listFavoriteContacts();
+    } else {
+      contacts = await listContacts();
+    }
+
     res.status(200).json(contacts);
   } catch (error) {
-    next(error);
+    console.error("Error fetching contacts:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
