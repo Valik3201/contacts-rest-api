@@ -80,37 +80,34 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.post("/users/logout", authenticateToken, async (req, res) => {
+router.post("/logout", authenticateToken, async (req, res) => {
   try {
     const userId = req.user._id;
 
-    const user = await User.findById(userId);
-    if (!user) {
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: { token: null } },
+      { new: true }
+    );
+
+    if (!updatedUser) {
       return res.status(401).json({ message: "Not authorized" });
     }
 
-    user.token = null;
-    await user.save();
-
-    res.status(204).json({ message: "Logout successful" });
+    res.status(204).send();
   } catch (error) {
     console.error("Logout error:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
 
-router.get("/users/current", authenticateToken, async (req, res) => {
+router.get("/current", authenticateToken, async (req, res) => {
   try {
-    const userId = req.user._id;
-
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(401).json({ message: "Not authorized" });
-    }
+    const { email, subscription } = req.user;
 
     res.status(200).json({
-      email: user.email,
-      subscription: user.subscription,
+      email: email,
+      subscription: subscription,
     });
   } catch (error) {
     console.error("Error getting current user:", error);
@@ -118,7 +115,7 @@ router.get("/users/current", authenticateToken, async (req, res) => {
   }
 });
 
-router.patch("/users", authenticateToken, async (req, res) => {
+router.patch("/subscription", authenticateToken, async (req, res) => {
   try {
     const userId = req.user._id;
 
