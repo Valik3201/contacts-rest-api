@@ -13,19 +13,30 @@ const {
 require("dotenv").config();
 
 router.post("/register", async (req, res) => {
-  try {
-    const { error, value } = userSchema.validate(req.body);
-    if (error) {
-      return res.status(400).json({ message: error.details[0].message });
-    }
+  const { error, value } = userSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ message: error.details[0].message });
+  }
 
+  try {
     const existingUser = await User.findOne({ email: value.email });
     if (existingUser) {
       return res.status(409).json({ message: "Email in use" });
     }
+  } catch (error) {
+    console.error("Error checking user existence:", error);
+    return res.status(500).json({ message: "Error checking user existence" });
+  }
 
-    const hashedPassword = await bcrypt.hash(value.password, 10);
+  let hashedPassword;
+  try {
+    hashedPassword = await bcrypt.hash(value.password, 10);
+  } catch (error) {
+    console.error("Error hashing password:", error);
+    return res.status(500).json({ message: "Error hashing password" });
+  }
 
+  try {
     const newUser = new User({
       email: value.email,
       password: hashedPassword,
@@ -41,7 +52,9 @@ router.post("/register", async (req, res) => {
     });
   } catch (error) {
     console.error("Registration error:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res
+      .status(500)
+      .json({ message: "Internal server error during user registration" });
   }
 });
 
