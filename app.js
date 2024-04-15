@@ -9,12 +9,16 @@ const app = express();
 
 app.use(express.json());
 
+app.use(express.static("public"));
+
 const contactsRouter = require("./routes/api/contactRoutes");
 const authRoutes = require("./routes/api/authRoutes");
+const avatarRoutes = require("./routes/api/avatarRoutes");
 const authenticateToken = require("./middleware/authenticateToken");
 
-app.use("/api/contacts", authenticateToken, contactsRouter);
 app.use("/api/auth", authRoutes);
+app.use("/api/avatars", authenticateToken, avatarRoutes);
+app.use("/api/contacts", authenticateToken, contactsRouter);
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
