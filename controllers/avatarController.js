@@ -15,12 +15,19 @@ const uploadAvatar = async (req, res) => {
     }
 
     const jimpImage = await Jimp.read(avatarFile.path);
-    await jimpImage.resize(250, 250).writeAsync(avatarFile.path);
+
+    await jimpImage
+      .resize(250, 250)
+      .writeAsync(path.join(avatarDir, avatarFile.filename));
 
     const fileName = `${userId}-${Date.now()}${path.extname(
       avatarFile.originalname
     )}`;
-    fs.renameSync(avatarFile.path, path.join(avatarDir, fileName));
+
+    fs.renameSync(
+      path.join(avatarDir, avatarFile.filename),
+      path.join(avatarDir, fileName)
+    );
 
     const user = await User.findById(userId);
     user.avatarURL = `/avatars/${fileName}`;
