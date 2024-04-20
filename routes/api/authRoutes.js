@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../../models/user");
 const authenticateToken = require("../../middleware/authenticateToken");
+const gravatar = require("gravatar");
 
 const {
   userSchema,
@@ -37,10 +38,18 @@ router.post("/register", async (req, res) => {
   }
 
   try {
+    const avatarURL = gravatar.url(value.email, {
+      protocol: "https",
+      s: "250",
+      r: "pg",
+      d: "identicon",
+    });
+
     const newUser = new User({
       email: value.email,
       password: hashedPassword,
       subscription: "starter",
+      avatarURL: avatarURL,
     });
     await newUser.save();
 
