@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../../models/user");
 const authenticateToken = require("../../middleware/authenticateToken");
 const gravatar = require("gravatar");
+const { v4: uuidv4 } = require("uuid");
+const { sendVerificationEmail } = require("../../config/emailService");
 
 const {
   userSchema,
@@ -50,7 +52,11 @@ router.post("/register", async (req, res) => {
       password: hashedPassword,
       subscription: "starter",
       avatarURL: avatarURL,
+      verificationToken: uuidv4(),
     });
+
+    await sendVerificationEmail(newUser.email, newUser.verificationToken);
+
     await newUser.save();
 
     res.status(201).json({
@@ -77,6 +83,10 @@ router.post("/login", async (req, res) => {
     const user = await User.findOne({ email: value.email });
     if (!user) {
       return res.status(401).json({ message: "Email or password is wrong" });
+    }
+
+    if (!user.verify) {
+      return res.status(401).json({ message: "Email is not verified" });
     }
 
     const passwordMatch = await bcrypt.compare(value.password, user.password);
@@ -162,6 +172,28 @@ router.patch("/subscription", authenticateToken, async (req, res) => {
     });
   } catch (error) {
     console.error("Error updating subscription:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+router.get("/verify/:verificationToken", async (req, res) => {
+  try {
+    const { verificationToken } = req.params;
+
+    const user = await User.findOne({ verificationToken });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    await User.findByIdAndUpdate(user._id, {
+      verify: true,
+      verificationToken: null,
+    });
+
+    res.status(200).json({ message: "Email verification successful" });
+  } catch (error) {
+    console.error("Email verification error:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
