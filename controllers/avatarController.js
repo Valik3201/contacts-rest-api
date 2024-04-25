@@ -29,11 +29,13 @@ const uploadAvatar = async (req, res) => {
       path.join(avatarDir, fileName)
     );
 
-    const user = await User.findById(userId);
-    user.avatarURL = `/avatars/${fileName}`;
-    await user.save();
+    const avatarURL = `/avatars/${fileName}`;
 
-    res.status(200).json({ avatarURL: user.avatarURL });
+    await User.findByIdAndUpdate(userId, {
+      avatarURL,
+    });
+
+    res.status(200).json({ avatarURL });
   } catch (error) {
     console.error("Avatar upload error:", error);
     res.status(500).json({ message: "Internal server error" });
