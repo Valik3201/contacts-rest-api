@@ -24,6 +24,6 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({ storage: storage, fileFilter: fileFilter });
 
-router.patch("/", upload.single("avatar"), uploadAvatar);
+router.patch("/avatars", upload.single("avatar"), uploadAvatar);
 
 module.exports = router;

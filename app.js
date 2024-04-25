@@ -17,7 +17,7 @@ const avatarRoutes = require("./routes/api/avatarRoutes");
 const authenticateToken = require("./middleware/authenticateToken");
 
 app.use("/api/auth", authRoutes);
-app.use("/api/avatars", authenticateToken, avatarRoutes);
+app.use("/api/auth", authenticateToken, avatarRoutes);
 app.use("/api/contacts", authenticateToken, contactsRouter);
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
