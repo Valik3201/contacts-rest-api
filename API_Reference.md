@@ -1,4 +1,4 @@
-# API Documentation
+# API Reference
 
 ## Authentication Endpoints
 
@@ -9,7 +9,7 @@
 
 ### Register
 
-```http
+```
   POST /register
 ```
 
@@ -35,7 +35,7 @@
 
 ### Login
 
-```http
+```
   POST /login
 ```
 
@@ -62,7 +62,7 @@
 
 ### Logout
 
-```http
+```
   POST /logout
 ```
 
@@ -75,7 +75,7 @@
 
 ### Get Current User
 
-```http
+```
   GET /current
 ```
 
@@ -94,7 +94,7 @@
 
 ### Update Subscription
 
-```http
+```
   PATCH /subscription
 ```
 
@@ -120,7 +120,7 @@
 
 ### Verify Email
 
-```http
+```
   GET /verify/:verificationToken
 ```
 
@@ -141,7 +141,7 @@
 
 ### Resend Verification Email
 
-```http
+```
   POST /verify
 ```
 
@@ -163,7 +163,7 @@
 
 ### Upload Avatar
 
-```http
+```
   PATCH /avatars
 ```
 
@@ -197,7 +197,7 @@
 
 ### Get Contacts
 
-```http
+```
 GET /contacts
 ```
 
@@ -230,7 +230,7 @@ GET /contacts
 
 ### Get Contact by ID
 
-```http
+```
 GET /contacts/:contactId
 ```
 
@@ -254,7 +254,7 @@ GET /contacts/:contactId
 
 ### Create Contact
 
-```http
+```
 POST /contacts
 ```
 
@@ -281,7 +281,7 @@ POST /contacts
 
 ### Delete Contact
 
-```http
+```
 DELETE /contacts/:contactId
 ```
 
@@ -302,7 +302,7 @@ DELETE /contacts/:contactId
 
 ### Update Contact
 
-```http
+```
 PUT /contacts/:contactId
 ```
 
@@ -330,7 +330,7 @@ PUT /contacts/:contactId
 
 ### Update Contact Favorite Status
 
-```http
+```
 PATCH /contacts/:contactId/favorite
 ```
 
