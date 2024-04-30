@@ -60,7 +60,7 @@ This project implements a REST API for managing contacts. It provides endpoints 
   - **PUT /api/contacts/:id**: Updates an existing contact.
   - **DELETE /api/contacts/:id**: Deletes a contact by ID.
  
-For detailed API documentation, please refer to [API_Reference.md](./API_Reference.md).
+For detailed API documentation, please refer to [API Reference](./API_Reference.md).
 
 ## Technologies Used
 
