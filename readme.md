@@ -8,6 +8,8 @@ This project implements a REST API for managing contacts. It provides endpoints 
 ![MongoDB Badge](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=fff&style=flat)
 ![Mongoose Badge](https://img.shields.io/badge/Mongoose-800?logo=mongoose&logoColor=fff&style=flat)
 ![JSON Web Tokens Badge](https://img.shields.io/badge/JSON%20Web%20Tokens-000?logo=jsonwebtokens&logoColor=fff&style=flat)
+![.ENV Badge](https://img.shields.io/badge/.ENV-ECD53F?logo=dotenv&logoColor=000&style=flat)
+![Postman Badge](https://img.shields.io/badge/Postman-FF6C37?logo=postman&logoColor=fff&style=flat)
 
 ## Features
 
@@ -16,6 +18,8 @@ This project implements a REST API for managing contacts. It provides endpoints 
 - **Data Handling Functions**: Includes functions for managing contact data, such as listing contacts, adding, updating, and deleting contacts.
 - **Middleware Configuration**: Configures Express.js middleware for logging, CORS, and JSON parsing.
 - **Data Validation**: Enhances data validation using Joi to ensure incoming data meets specified requirements.
+- **Avatar Handling:** Allows users to upload and update their avatars using Multer for file uploads and Jimp for image manipulation.
+- **Email Verification:** Implements email verification using Postmark to ensure that users verify their email addresses upon registration.
 
 ## Installation
 
@@ -37,7 +41,7 @@ This project implements a REST API for managing contacts. It provides endpoints 
    npm start
    ```
 
-## Usage
+## API Reference
 
 - **Authentication**:
 
@@ -46,6 +50,8 @@ This project implements a REST API for managing contacts. It provides endpoints 
   - **POST /api/users/logout**: Logout by invalidating the user's token.
   - **GET /api/auth/current**: Retrieves the current authenticated user's details.
   - **PATCH /api/auth/subscription**: Updates the subscription type of the authenticated user. Accepts one of the following values: 'starter', 'pro', 'business'.
+  - **PATCH /api/auth/avatars:** Updates the avatar of the authenticated user.
+  - **POST /api/users/verify:** Resends the verification email to the user.
 
 - **Contact Operations**:
   - **GET /api/contacts**: Retrieves a list of all contacts. Supports pagination and filtering by favorite status.
@@ -53,6 +59,8 @@ This project implements a REST API for managing contacts. It provides endpoints 
   - **POST /api/contacts**: Adds a new contact.
   - **PUT /api/contacts/:id**: Updates an existing contact.
   - **DELETE /api/contacts/:id**: Deletes a contact by ID.
+ 
+For detailed API documentation, please refer to [API_Reference.md](./API_Reference.md).
 
 ## Technologies Used
 
@@ -64,6 +72,8 @@ This project implements a REST API for managing contacts. It provides endpoints 
 - **Mongoose**: A MongoDB object modeling tool designed to work in an asynchronous environment. Mongoose provides a straightforward way to define schemas, perform CRUD operations, and perform data validation.
 - **JWT (JSON Web Tokens)**: A compact, URL-safe means of representing claims to be transferred between two parties. JWTs are widely used for authentication and authorization in stateless applications, providing a secure and efficient way to manage user sessions.
 - **bcrypt**: A library to help you hash passwords securely. bcrypt is a popular choice for password hashing due to its resistance to brute-force attacks and its adjustable computational cost, making it suitable for varying security requirements.
+- **Multer:** A middleware for handling multipart/form-data, used for uploading files in Node.js applications.
+- **Jimp:** An image processing library for Node.js, used for resizing and manipulating images.
 
 ### Why MongoDB?
 
